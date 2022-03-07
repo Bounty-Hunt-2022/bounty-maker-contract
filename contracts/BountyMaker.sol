@@ -15,7 +15,6 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     mapping(address => bool) private admins;
     mapping(string => Bounty) public bountys;
     mapping(string => uint[]) public rewards;
-    mapping(string => string[]) public wins;
     IERC20 public token;
 
 
@@ -139,7 +138,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
             abi.encodePacked(
                 _baseURI,
                UintToStr.uint2str(bountyTokenIndex),
-                "/metadata.json"
+                ".json"
             )
         );
 

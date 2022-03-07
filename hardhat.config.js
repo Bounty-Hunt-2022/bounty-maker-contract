@@ -28,15 +28,16 @@ module.exports = {
     },
     mumbai: {
       url: process.env.ALCHEMY_MUMBAI_URL,
-      accounts: [process.env.WALLET_PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY],
     },
   },
   etherscan: {
-    rinkeby: {
-      apiKey: process.env.ETHERSCAN_API_KEY,
-    },
-    mumbai: {
-      apiKey: process.env.POLYGONSCAN_API_KEY,
+    // rinkeby: {
+    //   apiKey: process.env.ETHERSCAN_API_KEY,
+    // },
+    apiKey: {
+      polygonMumbai: process.env.POLYGONSCAN_API_KEY,
+      rinkeby: process.env.ETHERSCAN_API_KEY,
     },
   },
 };
