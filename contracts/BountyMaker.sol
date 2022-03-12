@@ -3,7 +3,6 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
@@ -26,6 +25,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
         uint128 tokenLimit;
         bool active;    
         uint256 endTime;
+        address admin;
         // address[] winners;
     }
 
@@ -108,7 +108,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
         require(totalReward<token.allowance(address(msg.sender),address(this)),"Payment: Not approved");
         SafeERC20.safeTransferFrom(token,address(msg.sender),address(this), totalReward);
         // address[] memory _winners;
-        Bounty memory bounty = Bounty(uri,_tokenLimit,true,_endTime);
+        Bounty memory bounty = Bounty(uri,_tokenLimit,true,_endTime,address(msg.sender));
         rewards[_bountyId]=_rewards;
         bountys[_bountyId] = bounty;
         emit BountyCreated(_bountyId,_rewards);
@@ -119,6 +119,8 @@ contract BountyMaker is ERC721URIStorage, Ownable {
             "BountyMaker: Bounty is not active");
         require(bountys[_bountyId].tokenLimit==_winners.length ,
             "BountyMaker: No of winners must be equal to tokenLimts");
+        require(bountys[_bountyId].admin==address(msg.sender),
+            "BountyMaker: Not bounty admin");
         for(uint128 i=0;i<_winners.length;i++){
             winners[_winners[i]][_bountyId] = i+1;
         }    

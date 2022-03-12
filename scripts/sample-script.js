@@ -30,12 +30,12 @@ async function main() {
   await tokenApproval.wait();
 
   console.log("USDC address: ", usdc.address);
-  // rinkeby - USDC address:  0x153489FaBA24f2745aA752b01C2748803Aace876
-  // rinkeby - BountyMaker address:  0x483EcE961185FfeD40383154A0cc74a6e402635D
+  // mumbai -- USDC address:  0x00f845150ac545C6c4185621553C1A74BB0e64dD
+  // mumbai -- BountyMaker address:  0x1E0d0f87D3EbC2F4E928FbD629cEf92f2619a202
   console.log("BountyMaker address: ", bountymaker.address);
 
   const bountyId = "VVS";
-  const uri = "ipfs://Qma9fyUqLUm3SmAdxBBS6g3qxu6xNWdrkZcuUGPNAnjv9E/";
+  const uri = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
   const tokenLimit = 5;
   const rewards = [300, 200, 100];
 
@@ -50,7 +50,7 @@ async function main() {
   await bounty1.wait();
 
   const bountyId1 = "DVS";
-  const uri1 = "ipfs://Qma9fyUqLUm3SmAdxBBS6g3qxu6xNWdrkZcuUGPNAnjv9E/";
+  const uri1 = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
   const tokenLimit1 = 5;
   const rewards1 = [1200, 500, 300, 200, 100];
 
