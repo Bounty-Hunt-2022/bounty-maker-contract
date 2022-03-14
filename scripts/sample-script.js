@@ -30,8 +30,8 @@ async function main() {
   await tokenApproval.wait();
 
   console.log("USDC address: ", usdc.address);
-  // mumbai -- USDC address:  0x00f845150ac545C6c4185621553C1A74BB0e64dD
-  // mumbai -- BountyMaker address:  0x1E0d0f87D3EbC2F4E928FbD629cEf92f2619a202
+  // mumbai -- USDC address:  0xC27c8F6011272C3d6B1d1968317aB0BDaAF5fD55
+  // mumbai -- BountyMaker address:  0xF96fCdc3361214b9e906B0d097b0C2dDa1085768
   console.log("BountyMaker address: ", bountymaker.address);
 
   const bountyId = "VVS";
@@ -44,7 +44,7 @@ async function main() {
     uri,
     tokenLimit,
     rewards,
-    "1645776468"
+    "1647260767"
   );
 
   await bounty1.wait();
@@ -59,7 +59,7 @@ async function main() {
     uri1,
     tokenLimit1,
     rewards1,
-    "1645776468"
+    "1647260767"
   );
 
   await bounty2.wait();

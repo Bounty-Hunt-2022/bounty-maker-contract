@@ -13,6 +13,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     mapping(address => mapping(string => uint128)) public winners;
     mapping(address => bool) private admins;
     mapping(string => Bounty) public bountys;
+    mapping(string => address) private bountyAdmin; // while using this
     mapping(string => uint[]) public rewards;
     IERC20 public token;
 
@@ -25,8 +26,6 @@ contract BountyMaker is ERC721URIStorage, Ownable {
         uint128 tokenLimit;
         bool active;    
         uint256 endTime;
-        address admin;
-        // address[] winners;
     }
 
     event Claim(
@@ -60,23 +59,23 @@ contract BountyMaker is ERC721URIStorage, Ownable {
 
     modifier eligibiltyCheck(string memory _bountyId, address to) {
         require(
-            !bountys[_bountyId].active,
-            "BountyMaker: bounty is not finished yet"
+            !bountys[_bountyId].active
+            // "BountyMaker: bounty is not finished yet"
         );
         require(
-            winners[to][_bountyId] > 0,
-            "BountyMaker: address has not won"
+            winners[to][_bountyId] > 0
+            // "BountyMaker: address has not won"
         );
         require(
-            claimed[to][_bountyId] == 0,
-            "BountyMaker: address has already claimed token"
+            claimed[to][_bountyId] == 0
+            // "BountyMaker: address has already claimed token"
         );
         _;
     }
     modifier rewardEligibiltyCheck(string memory _bountyId, address to) {
         require(
-             winners[to][_bountyId]<=rewards[_bountyId].length ,
-            "BountyMaker: address is not eligible for reward"
+             winners[to][_bountyId]<=rewards[_bountyId].length 
+            // "BountyMaker: address is not eligible for reward"
         );
         _;
     }
@@ -107,11 +106,15 @@ contract BountyMaker is ERC721URIStorage, Ownable {
         require(totalReward<token.balanceOf(address(msg.sender)),"Payment: Insufficient balance of creator");
         require(totalReward<token.allowance(address(msg.sender),address(this)),"Payment: Not approved");
         SafeERC20.safeTransferFrom(token,address(msg.sender),address(this), totalReward);
-        // address[] memory _winners;
-        Bounty memory bounty = Bounty(uri,_tokenLimit,true,_endTime,address(msg.sender));
+        Bounty memory bounty = Bounty(uri,_tokenLimit,true,_endTime);
+        bountyAdmin[_bountyId] = address(msg.sender);
         rewards[_bountyId]=_rewards;
         bountys[_bountyId] = bounty;
         emit BountyCreated(_bountyId,_rewards);
+    }
+
+    function getBountyAdmin(string memory _bountyId) external view returns (address) {
+        return bountyAdmin[_bountyId];
     }
 
     function setBountyWinners(string memory _bountyId, address[] memory _winners) external onlyAdmin {
@@ -119,7 +122,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
             "BountyMaker: Bounty is not active");
         require(bountys[_bountyId].tokenLimit==_winners.length ,
             "BountyMaker: No of winners must be equal to tokenLimts");
-        require(bountys[_bountyId].admin==address(msg.sender),
+        require(bountyAdmin[_bountyId]==address(msg.sender),
             "BountyMaker: Not bounty admin");
         for(uint128 i=0;i<_winners.length;i++){
             winners[_winners[i]][_bountyId] = i+1;

@@ -778,8 +778,8 @@
       ]
     },
     "/coding/hackathonEthernals/bounty-maker-contract/contracts/BountyMaker.sol": {
-      "lastModificationDate": 1646662508107,
-      "contentHash": "7fc8bd744b500e77fd01b056a3703065",
+      "lastModificationDate": 1647107700021,
+      "contentHash": "626a6a78bf0dc46a05fbb5b21bbf9f46",
       "sourceName": "contracts/BountyMaker.sol",
       "solcConfig": {
         "version": "0.8.4",
@@ -806,7 +806,6 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol",
