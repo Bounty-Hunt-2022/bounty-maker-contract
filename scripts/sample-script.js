@@ -34,74 +34,41 @@ async function main() {
   // mumbai -- BountyMaker address:  0x0418dFcE00faDE89CAbD7B5C970642f026888E48
   console.log("BountyMaker address: ", bountymaker.address);
 
-  const bountyId = "VVS";
-  const uri = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
-  const tokenLimit = 3;
+  const bountyId =
+    "bafybeighqebtphpfruehch2emzmvzifqfhj2sqzr2aihs2vwhix6iuilkq";
+  const uri =
+    "ipfs://bafybeiei2c656ir7t5h3qba6vuigvcwzicq73jie74dykkgrkqnjw2l4ve/";
+  const tokenLimit = 1;
   const rewards = [300];
-  const metadata =
-    "bafyreicozsptpehkqt6cdz5kweewnfqmakav3tvyonad5wgdzt6mnzkfaa";
+  // const metadata =
+  //   "bafyreicozsptpehkqt6cdz5kweewnfqmakav3tvyonad5wgdzt6mnzkfaa";
 
   const bounty1 = await bountymaker.createBounty(
     bountyId,
     uri,
-    metadata,
+    // metadata,
     tokenLimit,
     rewards,
-    "1679706514"
+    "1651289625"
   );
 
   await bounty1.wait();
 
   const setWinnersTx1 = await bountymaker.setBountyWinners(bountyId, [
     "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3",
-    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3",
-    "0xfe6f2a79b3Ae6b9FeC15d340Bfe23E6e3Ac4Cf3c",
   ]);
 
   await setWinnersTx1.wait();
 
-  const bountyId1 = "DVS";
-  const uri1 = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
-  const tokenLimit1 = 3;
-  const rewards1 = [1200, 500, 300];
-
-  const bounty2 = await bountymaker.createBounty(
-    bountyId1,
-    uri1,
-    metadata,
-    tokenLimit1,
-    rewards1,
-    "1679706514"
-  );
-
-  await bounty2.wait();
-
-  const setWinnersTx2 = await bountymaker.setBountyWinners(bountyId1, [
-    "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3",
-    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3",
-    "0xfe6f2a79b3Ae6b9FeC15d340Bfe23E6e3Ac4Cf3c",
-  ]);
-
-  await setWinnersTx2.wait();
-
   const winnerClaim1 = await bountymaker.adminClaimToken(
-    bountyId1,
+    bountyId,
     "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3"
   );
   await winnerClaim1.wait();
-  const winnerClaim2 = await bountymaker.adminClaimToken(
-    bountyId,
-    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3"
-  );
-  await winnerClaim2.wait();
 
   console.log(
     "Balance of 0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3: ",
     await bountymaker.balanceOf("0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3")
-  );
-  console.log(
-    "Balance of 0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3: ",
-    await bountymaker.balanceOf("0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3")
   );
 }
 

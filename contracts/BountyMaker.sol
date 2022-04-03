@@ -17,6 +17,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     mapping(string => address) private bountyAdmin; // while using this
     mapping(string => uint[]) public rewards;
     IERC20 public token;
+    bool public open;
 
 
     using Counters for Counters.Counter;
@@ -24,7 +25,6 @@ contract BountyMaker is ERC721URIStorage, Ownable {
 
     struct Bounty{
         string uri;
-        string metadata;
         uint128 tokenLimit;
         bool active;    
         uint256 endTime;
@@ -53,9 +53,11 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     {
         admins[msg.sender] = true;
         token=_token;
+        open=true;
         _tokenIdTracker.increment();
     }
         modifier onlyAdmin() {
+        if(!open)
         require(admins[msg.sender] == true);
         _;
     }
@@ -91,7 +93,6 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     function createBounty(
         string memory _bountyId,
         string memory uri,
-        string memory metadata,
         uint128 _tokenLimit,
         uint[] memory _rewards,
         uint256 _endTime
@@ -110,7 +111,7 @@ contract BountyMaker is ERC721URIStorage, Ownable {
         require(totalReward<token.balanceOf(address(msg.sender)),"Payment: Insufficient balance of creator");
         require(totalReward<token.allowance(address(msg.sender),address(this)),"Payment: Not approved");
         SafeERC20.safeTransferFrom(token,address(msg.sender),address(this), totalReward);
-        Bounty memory bounty = Bounty(uri,metadata,_tokenLimit,true,_endTime);
+        Bounty memory bounty = Bounty(uri,_tokenLimit,true,_endTime);
         bountyAdmin[_bountyId] = address(msg.sender);
         rewards[_bountyId]=_rewards;
         bountys[_bountyId] = bounty;
@@ -123,6 +124,9 @@ contract BountyMaker is ERC721URIStorage, Ownable {
     function amIAdmin(address _admin) external view returns (bool) {
         return admins[_admin];
     }
+    function openToPublic(bool _isOpen) public onlyOwner{
+  open=_isOpen;
+}
 
     function setBountyWinners(string memory _bountyId, address[] memory _winners) external onlyAdmin {
         require(bountys[_bountyId].active ,
