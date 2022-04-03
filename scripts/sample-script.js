@@ -30,39 +30,79 @@ async function main() {
   await tokenApproval.wait();
 
   console.log("USDC address: ", usdc.address);
-  // mumbai -- USDC address:  0xC27c8F6011272C3d6B1d1968317aB0BDaAF5fD55
-  // mumbai -- BountyMaker address:  0xF96fCdc3361214b9e906B0d097b0C2dDa1085768
+  // mumbai -- USDC address:  0xf940746486Da186aE584f60cF87bA1dd2880A2db
+  // mumbai -- BountyMaker address:  0x0418dFcE00faDE89CAbD7B5C970642f026888E48
   console.log("BountyMaker address: ", bountymaker.address);
 
   const bountyId = "VVS";
   const uri = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
-  const tokenLimit = 5;
-  const rewards = [300, 200, 100];
+  const tokenLimit = 3;
+  const rewards = [300];
+  const metadata =
+    "bafyreicozsptpehkqt6cdz5kweewnfqmakav3tvyonad5wgdzt6mnzkfaa";
 
   const bounty1 = await bountymaker.createBounty(
     bountyId,
     uri,
+    metadata,
     tokenLimit,
     rewards,
-    "1647260767"
+    "1679706514"
   );
 
   await bounty1.wait();
 
+  const setWinnersTx1 = await bountymaker.setBountyWinners(bountyId, [
+    "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3",
+    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3",
+    "0xfe6f2a79b3Ae6b9FeC15d340Bfe23E6e3Ac4Cf3c",
+  ]);
+
+  await setWinnersTx1.wait();
+
   const bountyId1 = "DVS";
   const uri1 = "ipfs://QmadNLJKXgonAQxJxfHg9fd5PhRwTYvCfPBjEL7oYPNbHo/";
-  const tokenLimit1 = 5;
-  const rewards1 = [1200, 500, 300, 200, 100];
+  const tokenLimit1 = 3;
+  const rewards1 = [1200, 500, 300];
 
   const bounty2 = await bountymaker.createBounty(
     bountyId1,
     uri1,
+    metadata,
     tokenLimit1,
     rewards1,
-    "1647260767"
+    "1679706514"
   );
 
   await bounty2.wait();
+
+  const setWinnersTx2 = await bountymaker.setBountyWinners(bountyId1, [
+    "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3",
+    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3",
+    "0xfe6f2a79b3Ae6b9FeC15d340Bfe23E6e3Ac4Cf3c",
+  ]);
+
+  await setWinnersTx2.wait();
+
+  const winnerClaim1 = await bountymaker.adminClaimToken(
+    bountyId1,
+    "0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3"
+  );
+  await winnerClaim1.wait();
+  const winnerClaim2 = await bountymaker.adminClaimToken(
+    bountyId,
+    "0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3"
+  );
+  await winnerClaim2.wait();
+
+  console.log(
+    "Balance of 0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3: ",
+    await bountymaker.balanceOf("0x40d5250D1ce81fdD1F0E0FB4F471E57AA0c1FaD3")
+  );
+  console.log(
+    "Balance of 0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3: ",
+    await bountymaker.balanceOf("0xD253eDAF1B53a2E0e5E1B8021ba4937D21806dd3")
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

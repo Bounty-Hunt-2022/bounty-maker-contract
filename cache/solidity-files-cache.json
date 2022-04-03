@@ -778,8 +778,8 @@
       ]
     },
     "/coding/hackathonEthernals/bounty-maker-contract/contracts/BountyMaker.sol": {
-      "lastModificationDate": 1647107700021,
-      "contentHash": "626a6a78bf0dc46a05fbb5b21bbf9f46",
+      "lastModificationDate": 1647771903865,
+      "contentHash": "82e6c8fa05bba58fb769e122c4229270",
       "sourceName": "contracts/BountyMaker.sol",
       "solcConfig": {
         "version": "0.8.4",
